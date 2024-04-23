@@ -1,32 +1,97 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:velocity_x/velocity_x.dart';
 
-class SignInPage extends StatelessWidget {
+import 'login.dart';
+
+import 'config.dart';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class SignInPage extends StatefulWidget {
+  @override
+  _SignInState createState() => _SignInState();
+}
+
+class _SignInState extends State<SignInPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+
+  bool _isNotValidate = false;
+
+  void registerUser() async {
+    if (emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        firstNameController.text.isNotEmpty &&
+        lastNameController.text.isNotEmpty &&
+        phoneNumberController.text.isNotEmpty) {
+      // Make HTTP POST request to register endpoint
+      var response = await http.post(
+        Uri.parse(
+            'http://192.168.1.6:3500/api/users/register'), // Update with your backend API endpoint
+        body: {
+          'email': emailController.text,
+          'password': passwordController.text,
+          'firstName': firstNameController.text,
+          'lastName': lastNameController.text,
+          'phoneNumber': phoneNumberController.text,
+          // Add other fields as needed
+        },
+      );
+      var jsonResponse = jsonDecode(response.body);
+      // Handle response
+      if (response.statusCode == 201) {
+        print('Registration successful: ${response.body}');
+        // Navigate user to login screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  LoginPage()), // Replace LoginPage() with the widget for your login screen
+        );
+      } else {
+        // Registration failed
+        // Display error message to user
+        print('Registration failed: ${response.body}');
+      }
+    } else {
+      setState(() {
+        _isNotValidate = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Colors.orange, // Change icon color to orange
+          color: Colors.orange,
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(
-            20.0, 10.0, 20.0, 20.0), // Adjust the padding
+        padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
         child: Center(
           child: SingleChildScrollView(
-            // Wrap with SingleChildScrollView
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   children: [
-                    // Logo Image
                     Column(
                       children: [
                         Image.asset(
-                          'assets/images/homepage.jpg', // Replace with your image asset path
-                          width: 100, // Adjust the width as needed
-                          height: 100, // Adjust the height as needed
+                          'assets/images/LOGO.png',
+                          width: 100,
+                          height: 100,
                         ),
                         SizedBox(height: 20),
                       ],
@@ -39,160 +104,158 @@ class SignInPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 0), // Add some space between the texts
+                    SizedBox(height: 0),
                     Text(
-                      "SI CE N'EST PAS MAINTENANT ,QUAND?",
+                      "SI CE N'EST PAS MAINTENANT, QUAND?",
                       style: TextStyle(
-                        fontSize: 19, // Adjust the font size as needed
-                        color: Colors
-                            .orange, // Use the same color as the other text
+                        fontSize: 19,
+                        color: Colors.orange,
                       ),
                     ),
                     SizedBox(height: 30),
                   ],
                 ),
                 TextField(
+                  controller: firstNameController,
                   decoration: InputDecoration(
+                    errorText: _isNotValidate ? "Enter Proper Info" : null,
                     labelText: 'Nom',
                     labelStyle: TextStyle(
-                      color: Colors.orange, // Set label text color to orange
+                      color: Colors.orange,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(40.0), // Set border radius
+                      borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors
-                            .transparent, // Make border transparent initially
+                        color: Colors.transparent,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
                 TextField(
+                  controller: lastNameController,
                   decoration: InputDecoration(
+                    errorText: _isNotValidate ? "Enter Proper Info" : null,
                     labelText: 'Prénom',
                     labelStyle: TextStyle(
-                      color: Colors.orange, // Set label text color to orange
+                      color: Colors.orange,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(40.0), // Set border radius
+                      borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors
-                            .transparent, // Make border transparent initially
+                        color: Colors.transparent,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
                 TextField(
+                  controller: phoneNumberController,
                   decoration: InputDecoration(
+                    errorText: _isNotValidate ? "Enter Proper Info" : null,
                     labelText: 'Téléphone',
                     labelStyle: TextStyle(
-                      color: Colors.orange, // Set label text color to orange
+                      color: Colors.orange,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(40.0), // Set border radius
+                      borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors
-                            .transparent, // Make border transparent initially
+                        color: Colors.transparent,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
                 TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Adresse email',
+                    errorText: _isNotValidate ? "Enter Proper Info" : null,
+                    labelStyle: TextStyle(
+                      color: Colors.orange,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                      borderSide: BorderSide(
+                        color: Colors.orange,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                      borderSide: BorderSide(
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
+                    errorText: _isNotValidate ? "Enter Proper Info" : null,
                     labelText: 'Mot de passe',
                     labelStyle: TextStyle(
-                      color: Colors.orange, // Set label text color to orange
+                      color: Colors.orange,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(40.0), // Set border radius
+                      borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors
-                            .transparent, // Make border transparent initially
+                        color: Colors.transparent,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Confirmer votre mot de passe',
-                    labelStyle: TextStyle(
-                      color: Colors.orange, // Set label text color to orange
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(40.0), // Set border radius
-                      borderSide: BorderSide(
-                        color: Colors
-                            .transparent, // Make border transparent initially
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                      borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
-                      borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                   ),
@@ -200,18 +263,17 @@ class SignInPage extends StatelessWidget {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle sign-in button press
+                    registerUser();
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange, // Button color
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 14), // Button padding
-                    textStyle: TextStyle(fontSize: 18), // Button text style
+                    backgroundColor: Colors.orange,
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 14),
+                    textStyle: TextStyle(fontSize: 18),
                   ),
                   child: Text('S\'INSCRIRE'),
                 ),
-                SizedBox(height: 10), // Add space between buttons
+                SizedBox(height: 10),
               ],
             ),
           ),

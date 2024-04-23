@@ -57,7 +57,8 @@ class Apps extends StatelessWidget {
                           // Navigate to the login page
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Login()),
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
