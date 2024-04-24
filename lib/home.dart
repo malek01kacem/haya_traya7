@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hayya_traya7/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'login.dart'; // Import your LoginPage or wherever you navigate after logout
 
 class Plant {
   final String imageURL;
@@ -65,6 +68,18 @@ class _HomePageState extends State<HomePage> {
     return !isFavorited;
   }
 
+  void logout() async {
+    // Clear token from SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+
+    // Navigate to login page
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -72,6 +87,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        actions: [
+          IconButton(
+            onPressed: logout,
+            icon: Icon(Icons.logout),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

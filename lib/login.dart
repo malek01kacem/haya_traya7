@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hayya_traya7/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:hayya_traya7/signin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,30 +17,27 @@ class _LoginState extends State<LoginPage> {
 
   void loginUser() async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      // Make HTTP POST request to login endpoint
       var response = await http.post(
-        Uri.parse(
-            'http://192.168.1.6:3500/api/users/login'), // Update with your backend API endpoint
+        Uri.parse('http://192.168.1.6:3500/api/users/login'),
         body: {
           'email': emailController.text,
           'password': passwordController.text,
         },
       );
 
-      // Handle response
       if (response.statusCode == 200) {
-        // Login successful
-        // Navigate user to the home screen or any other screen
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var responseData = json.decode(response.body);
+        var token = responseData['token'];
+        await prefs.setString(
+            'token', token); // Save token to SharedPreferences
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                HomePage(), // Replace HomeScreen() with the widget for your home screen
+            builder: (context) => HomePage(),
           ),
         );
       } else {
-        // Login failed
-        // Display error message to user
         print('Login failed: ${response.body}');
       }
     } else {
@@ -53,7 +52,7 @@ class _LoginState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Colors.orange, // Change icon color to orange
+          color: Colors.orange,
         ),
       ),
       body: Padding(
@@ -62,22 +61,20 @@ class _LoginState extends State<LoginPage> {
           10.0,
           20.0,
           20.0,
-        ), // Adjust the top padding
+        ),
         child: Center(
           child: SingleChildScrollView(
-            // Wrap with SingleChildScrollView
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   children: [
-                    // Logo Image
                     Column(
                       children: [
                         Image.asset(
-                          'assets/images/LOGO.png', // Replace with your image asset path
-                          width: 100, // Adjust the width as needed
-                          height: 100, // Adjust the height as needed
+                          'assets/images/LOGO.png',
+                          width: 100,
+                          height: 100,
                         ),
                         SizedBox(height: 20),
                       ],
@@ -90,13 +87,12 @@ class _LoginState extends State<LoginPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 0), // Add some space between the texts
+                    SizedBox(height: 0),
                     Text(
                       "SI CE N'EST PAS MAINTENANT ,QUAND?",
                       style: TextStyle(
-                        fontSize: 19, // Adjust the font size as needed
-                        color: Colors
-                            .orange, // Use the same color as the other text
+                        fontSize: 19,
+                        color: Colors.orange,
                       ),
                     ),
                     SizedBox(height: 30),
@@ -107,25 +103,24 @@ class _LoginState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: 'Email',
                     labelStyle: TextStyle(
-                      color: Colors.orange, // Set label text color to orange
+                      color: Colors.orange,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(40.0), // Set border radius
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
-                        color: Colors.transparent, // Make border transparent
+                        color: Colors.orange,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                   ),
@@ -137,25 +132,24 @@ class _LoginState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: 'Mot de passe',
                     labelStyle: TextStyle(
-                      color: Colors.orange, // Set label text color to orange
+                      color: Colors.orange,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(40.0), // Set border radius
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
-                        color: Colors.transparent, // Make border transparent
+                        color: Colors.orange,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
-                        color: Colors.orange, // Set border color
+                        color: Colors.orange,
                       ),
                     ),
                   ),
@@ -164,24 +158,21 @@ class _LoginState extends State<LoginPage> {
                 ElevatedButton(
                   onPressed: () {
                     loginUser();
-                    // Handle login button press
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange, // Text color
+                    backgroundColor: Colors.orange,
                     padding: EdgeInsets.symmetric(
                       horizontal: 50,
                       vertical: 14,
-                    ), // Adjust button padding
-                    textStyle:
-                        TextStyle(fontSize: 18), // Adjust button text style
+                    ),
+                    textStyle: TextStyle(fontSize: 18),
                   ),
                   child: Text('SE CONNECTER'),
                 ),
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    // Navigate to the sign-in page
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SignInPage()),
@@ -189,36 +180,30 @@ class _LoginState extends State<LoginPage> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange, // Text color
+                    backgroundColor: Colors.orange,
                     padding: EdgeInsets.symmetric(
                       horizontal: 70,
                       vertical: 14,
-                    ), // Adjust button padding
+                    ),
                     textStyle: TextStyle(
                       fontSize: 18,
-                    ), // Adjust button text style
+                    ),
                   ),
                   child: Text(
                     "S'INSCRIRE",
                   ),
-                ), // Add space between buttons
-                Column(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        // Action for "Mot de passe oublié ?" button
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero, // Remove padding
-                      ),
-                      child: Text(
-                        'Mot de passe oublié ?',
-                        style: TextStyle(
-                          color: Colors.grey, // Set text color to grey
-                        ),
-                      ),
+                ),
+                SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {
+                    // Action for "Mot de passe oublié ?" button
+                  },
+                  child: Text(
+                    'Mot de passe oublié ?',
+                    style: TextStyle(
+                      color: Colors.grey,
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
