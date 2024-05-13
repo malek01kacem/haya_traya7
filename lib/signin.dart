@@ -26,7 +26,7 @@ class _SignInState extends State<SignInPage> {
         lastNameController.text.isNotEmpty &&
         phoneNumberController.text.isNotEmpty) {
       var response = await http.post(
-        Uri.parse('http://192.168.1.6:3500/api/users/register'),
+        Uri.parse('http://192.168.1.8:3500/api/users/register'),
         body: {
           'email': emailController.text,
           'password': passwordController.text,

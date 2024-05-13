@@ -18,7 +18,7 @@ class _LoginState extends State<LoginPage> {
   void loginUser() async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       var response = await http.post(
-        Uri.parse('http://192.168.1.6:3500/api/users/login'),
+        Uri.parse('http://192.168.1.8:3500/api/users/login'),
         body: {
           'email': emailController.text,
           'password': passwordController.text,

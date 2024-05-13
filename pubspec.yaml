@@ -19,6 +19,7 @@ dependencies:
 
   flutter_test:
     sdk: flutter
+  flutter_secure_storage: ^9.0.0
 
 
 
@@ -27,3 +28,11 @@ flutter:
   assets:
     - assets/images/homepage.jpg
     - assets/images/LOGO.png
+    - assets/images/userimag.jpg
+    - assets/images/surfaceterrebattue.jpg
+    - assets/images/surffacedure.jpg
+    - assets/images/surffacegazon.jpg
+    - assets/images/msakenclub.png
+    - assets/images/msclub.png
+    
+    
