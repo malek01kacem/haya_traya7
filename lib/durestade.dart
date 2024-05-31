@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hayya_traya7/dureinfo.dart';
-import 'package:hayya_traya7/dureres.dart';
-import 'package:hayya_traya7/msakenclub.dart';
+
+import 'package:hayya_traya7/terreres.dart';
 import 'home.dart'; // Import the Home page if not already imported
 
 class durestadePage extends StatelessWidget {
@@ -26,12 +26,8 @@ class durestadePage extends StatelessWidget {
                 icon: Icon(Icons.arrow_back),
                 color: Colors.black,
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ),
-                  );
+                  // Navigate back to the previous page
+                  Navigator.pop(context);
                 },
               ),
             ),
@@ -97,7 +93,7 @@ class durestadePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => dureinfo(),
+                                builder: (context) => Dureinfo(),
                               ),
                             );
                           },
@@ -124,7 +120,9 @@ class durestadePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => dureres(),
+                                builder: (context) => TerreresPage(
+                                  bearerToken: '',
+                                ),
                               ),
                             );
                           },

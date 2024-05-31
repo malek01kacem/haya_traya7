@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // Navigate to login screen if token doesn't exist
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => Apps()),
       );
     }
   }

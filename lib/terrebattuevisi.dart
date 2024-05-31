@@ -3,11 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hayya_traya7/msakenclub.dart';
+import 'package:hayya_traya7/signin.dart';
 import 'package:hayya_traya7/terreinfo.dart';
 import 'package:hayya_traya7/terreres.dart';
 import 'home.dart'; // Import the Home page if not already imported
 
-class TerreBattuePage extends StatelessWidget {
+class TerreBattuevisiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,9 +120,7 @@ class TerreBattuePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => TerreresPage(
-                                  bearerToken: '',
-                                ),
+                                builder: (context) => SignInPage(),
                               ),
                             );
                           },
@@ -134,7 +133,7 @@ class TerreBattuePage extends StatelessWidget {
                                 50)), // Make button width match the parent and set height to 50
                           ),
                           child: Text(
-                            'Réserver',
+                            'Crée un compte pour reserver',
                             style: TextStyle(
                               color: Colors.white, // White text color
                               fontSize: 16, // Adjust font size

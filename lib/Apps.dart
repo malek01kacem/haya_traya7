@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hayya_traya7/home.dart';
+import 'package:hayya_traya7/visiteur.dart';
 import 'login.dart';
 import 'signin.dart';
 
@@ -26,7 +28,7 @@ class Apps extends StatelessWidget {
                 ),
                 SizedBox(height: 0), // Add some space between the texts
                 Text(
-                  "SI CE N'EST PAS MAINTENANT ,QUAND?",
+                  "SI PAS MAINTENANT , QUAND?",
                   style: TextStyle(
                     fontSize: 19, // Adjust the font size as needed
                     color:
@@ -52,53 +54,74 @@ class Apps extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Navigate to the login page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.orange, // Text color
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 50,
-                              vertical: 14), // Adjust button padding
-                          textStyle: TextStyle(
-                              fontSize: 18), // Adjust button text style
-                        ),
-                        child: Text(
-                          'SE CONNECTER',
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Navigate to the sign-in page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignInPage()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.orange, // Text color
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 70,
-                            vertical: 14,
-                          ), // Adjust button padding
-                          textStyle: TextStyle(
-                            fontSize: 18,
-                          ), // Adjust button text style
-                        ),
-                        child: Text(
-                          "S'INSCRIRE",
-                        ),
-                      ),
+                      SizedBox(height: 125),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Navigate to the login page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.orange,
+                                textStyle: TextStyle(fontSize: 18),
+                              ),
+                              child: Text('SE CONNECTER'),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          SizedBox(
+                            width: 200,
+                            height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Navigate to the sign-in page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignInPage()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.orange,
+                                textStyle: TextStyle(fontSize: 18),
+                              ),
+                              child: Text("S'INSCRIRE"),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          SizedBox(
+                            width: 200,
+                            height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Navigate to the home page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Visiteur()),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.orange,
+                                textStyle: TextStyle(fontSize: 18),
+                              ),
+                              child: Text("VISITER"),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),

@@ -1,19 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:hayya_traya7/Apps.dart';
-import 'package:hayya_traya7/Profile.dart';
-import 'package:hayya_traya7/durestade.dart';
+import 'package:hayya_traya7/durestadevisi.dart';
 import 'package:hayya_traya7/event.dart';
-import 'package:hayya_traya7/feedback.dart';
-import 'package:hayya_traya7/gazonstade.dart';
-import 'package:hayya_traya7/historique.dart';
+import 'package:hayya_traya7/gazonstadevisi.dart';
 import 'package:hayya_traya7/login.dart';
-import 'package:hayya_traya7/mesres.dart';
-import 'package:hayya_traya7/settingspage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:hayya_traya7/terrebattue.dart';
+import 'package:hayya_traya7/rejoindre.dart';
 import 'package:hayya_traya7/msakenclub.dart';
+import 'package:hayya_traya7/signin.dart';
+import 'package:hayya_traya7/terrebattuevisi.dart';
 
 class stade {
   final String imageURL;
@@ -21,7 +15,7 @@ class stade {
   final String stadeName;
   final double price;
   bool isFavorated;
-  final Widget page; // Page to navigate to for each stade
+  final Widget page;
 
   stade({
     required this.imageURL,
@@ -33,56 +27,69 @@ class stade {
   });
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class Visiteur extends StatefulWidget {
+  const Visiteur({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Visiteur> createState() => _VisiteurState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int selectedIndex = 0;
+class _VisiteurState extends State<Visiteur> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  Timer? _timer;
 
-  List<stade> _stadeList = [
+  final List<stade> _stadeList = [
     stade(
       imageURL: 'assets/images/surfaceterrebattue.jpg',
       category: 'Terre',
       stadeName: 'la terre battue',
       price: 20.0,
-      page: TerreBattuePage(), // Specify the page for each stade
+      page: TerreBattuevisiPage(),
     ),
     stade(
       imageURL: 'assets/images/surffacedure.jpg',
       category: 'Dure',
       stadeName: 'le stade dure',
       price: 15.0,
-      page: durestadePage(), // Specify the page for each stade
+      page: durestadevisiPage(),
     ),
     stade(
       imageURL: 'assets/images/surffacegazon.jpg',
       category: 'Gazon',
       stadeName: 'le stade gazon',
       price: 30.0,
-      page: gazonstadePage(), // Specify the page for each stade
+      page: gazonstadevisiPage(),
     ),
-  ];
-
-  List<String> _stadeTypes = [
-    'Terre',
-    'Dure',
-    'Gazon',
   ];
 
   bool toggleIsFavorated(bool isFavorited) {
     return !isFavorited;
   }
 
-  void logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
-    // Navigate to the login page
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Apps()));
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+      if (_currentPage < 2) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+
+      _pageController.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -91,23 +98,67 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: logout,
-            icon: Icon(Icons.logout),
-          ),
-        ],
+        backgroundColor: const Color.fromARGB(255, 253, 252, 251),
+        actions: [],
       ),
       body: Container(
-        color: Color.fromARGB(255, 255, 254, 251), // Light orange color
+        color: Color.fromARGB(255, 255, 254, 251),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.only(
-                  left: 120,
-                  bottom: 20,
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.login, color: Colors.orange, size: 30),
+                          SizedBox(width: 10),
+                          Text(
+                            'Se Connecter',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 30),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignInPage()),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.person_add,
+                              color: Colors.orange, size: 30),
+                          SizedBox(width: 10),
+                          Text(
+                            'Créer un compte',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
               GridView(
@@ -120,7 +171,6 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Navigate to the first page when the first card is tapped
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => EventPage()),
@@ -145,17 +195,14 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(
-                                  9), // Add padding of 10 pixels on all sides
+                              padding: EdgeInsets.all(9),
                               child: Text(
                                 "Événements",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      17, // Change the font size as needed
+                                  fontSize: 17,
                                 ),
-                                textAlign: TextAlign
-                                    .center, // Align the text in the center
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],
@@ -165,7 +212,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigate to the second page when the second card is tapped
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Msakenclub()),
@@ -190,17 +236,14 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(
-                                  9), // Add padding of 10 pixels on all sides
+                              padding: EdgeInsets.all(9),
                               child: Text(
                                 "Notre Club",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      17, // Change the font size as needed
+                                  fontSize: 17,
                                 ),
-                                textAlign: TextAlign
-                                    .center, // Align the text in the center
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],
@@ -210,13 +253,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigate to the third page when the third card is tapped
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ReservationResponsePage(
-                                  bearerToken: '',
-                                )),
+                          builder: (context) => RejoindrePage(),
+                        ),
                       );
                     },
                     child: ClipRRect(
@@ -232,23 +273,20 @@ class _HomePageState extends State<HomePage> {
                               width: 200,
                               color: Color.fromARGB(255, 238, 236, 236),
                               child: Image.asset(
-                                'assets/images/reservation.png',
+                                'assets/images/rejoindre.png',
                                 height: 150,
                                 fit: BoxFit.fill,
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(
-                                  1), // Add padding of 10 pixels on all sides
+                              padding: EdgeInsets.all(9),
                               child: Text(
-                                "Validation",
+                                "Haya Traya7",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      17, // Change the font size as needed
+                                  fontSize: 17,
                                 ),
-                                textAlign: TextAlign
-                                    .center, // Align the text in the center
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],
@@ -258,54 +296,53 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              Container(
-                height: 10,
-              ),
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.only(bottom: 10, top: 10),
-                  child: Text(
-                    'Terrains',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      shadows: [
-                        Shadow(
-                          color:
-                              Color.fromARGB(255, 255, 104, 58).withOpacity(1),
-                          // Add shadow
-                          offset: Offset(1, 2),
-                          // Set shadow offset
-                          blurRadius: 5,
-                          // Set shadow blur radius
-                        ),
-                      ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10, top: 10),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Terrains',
+                      style: TextStyle(
+                        fontSize: 37,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        shadows: [
+                          Shadow(
+                            color:
+                                Color.fromARGB(255, 254, 95, 67).withOpacity(1),
+                            // Add shadow
+                            offset: Offset(1, 2),
+                            // Set shadow offset
+                            blurRadius: 5,
+                            // Set shadow blur radius
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               Container(
-                height: 20,
+                height: 10,
               ),
               SizedBox(
-                //height of stade card
-                height: 420,
+                height: 380,
                 child: ListView.builder(
                   itemCount: _stadeList.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
-                        // Navigate to detail page
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => _stadeList[index].page),
+                            builder: (context) => _stadeList[index].page,
+                          ),
                         );
                       },
                       child: Container(
-                        //width of stade card
                         width: 300,
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ClipRRect(
@@ -330,15 +367,12 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.white,
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration
-                                            .none, // Pour supprimer tout soulignement du texte
+                                        decoration: TextDecoration.none,
                                         shadows: [
                                           Shadow(
-                                            color: Colors
-                                                .black, // Couleur de la bordure
-                                            blurRadius: 3, // Rayon du flou
-                                            offset: Offset(1,
-                                                3), // Décalage horizontal et vertical de l'ombre
+                                            color: Colors.black,
+                                            blurRadius: 3,
+                                            offset: Offset(1, 3),
                                           ),
                                         ],
                                       ),
@@ -349,16 +383,12 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.white,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration
-                                            .none, // Pour supprimer tout soulignement du texte
+                                        decoration: TextDecoration.none,
                                         shadows: [
                                           Shadow(
-                                            color: Colors
-                                                .black, // Couleur de la bordure
+                                            color: Colors.black,
                                             blurRadius: 10,
                                             offset: Offset(1, 0),
-
-                                            /// Rayon du flou
                                           ),
                                         ],
                                       ),
@@ -397,119 +427,53 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 120, bottom: 10, top: 10),
+                child: Text(
+                  'GALERIE',
+                  style: TextStyle(
+                    fontSize: 37,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    shadows: [
+                      Shadow(
+                        color: Color.fromARGB(255, 254, 95, 67)
+                            .withOpacity(1), // Add shadow
+                        offset: Offset(1, 2), // Set shadow offset
+                        blurRadius: 5, // Set shadow blur radius
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height:
+                    350, // This height can be adjusted based on your layout requirements
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return Image.asset(
+                      [
+                        'assets/images/msclub.png',
+                        'assets/images/LOGO.png',
+                        'assets/images/homepage.jpg'
+                      ][index],
+                      fit: BoxFit.cover,
+                      width: 300, // Adjust the width as desired
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor:
-            const Color.fromARGB(255, 235, 179, 96), // Light orange color
-        unselectedItemColor: const Color.fromARGB(
-            255, 236, 142, 3), // Lighter orange color for unselected items
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.feedback),
-            label: 'votre avis',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        selectedItemColor:
-            Color.fromARGB(255, 8, 42, 14), // Adjust color as needed
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-          // Navigate to profile.dart
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProfilePage(
-                        token: '',
-                      )), // Assuming ProfilePage is your profile.dart file
-            );
-          }
-          if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => FeedbackPage(
-                        token: '',
-                      )), // Assuming ProfilePage is your profile.dart file
-            );
-          }
-          if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Settingspage(
-                        token: '',
-                      )), // Assuming ProfilePage is your profile.dart file
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-
-class stadeWidget extends StatelessWidget {
-  final int index;
-  final List<stade> stadeList;
-
-  const stadeWidget({
-    Key? key,
-    required this.index,
-    required this.stadeList,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        children: [
-          ListTile(
-            leading: Image.asset(
-              stadeList[index].imageURL,
-              width: 70,
-              height: 70,
-              fit: BoxFit.cover,
-            ),
-            title: Text(stadeList[index].stadeName),
-            subtitle: Text('\$${stadeList[index].price}'),
-            trailing: IconButton(
-              icon: Icon(Icons.favorite_border),
-              onPressed: () {
-                // Toggle favorite status
-              },
-            ),
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to the page specified for this stade
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => stadeList[index].page),
-              );
-            },
-            child: Text('Go to ${stadeList[index].stadeName} Page'),
-          ),
-        ],
       ),
     );
   }

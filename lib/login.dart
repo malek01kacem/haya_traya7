@@ -4,6 +4,7 @@ import 'package:hayya_traya7/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:hayya_traya7/signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hayya_traya7/config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _LoginState extends State<LoginPage> {
   void loginUser() async {
     if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
       var response = await http.post(
-        Uri.parse('http://192.168.1.8:3500/api/users/login'),
+        Uri.parse('${defaultBaseUrls}api/users/login'),
         body: {
           'email': emailController.text,
           'password': passwordController.text,

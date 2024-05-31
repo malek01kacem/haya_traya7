@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hayya_traya7/gazoninfo.dart';
-import 'package:hayya_traya7/gazonres.dart';
-import 'package:hayya_traya7/msakenclub.dart';
+
+import 'package:hayya_traya7/terreres.dart';
 import 'home.dart'; // Import the Home page if not already imported
 
 class gazonstadePage extends StatelessWidget {
@@ -26,12 +26,8 @@ class gazonstadePage extends StatelessWidget {
                 icon: Icon(Icons.arrow_back),
                 color: Colors.black,
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ),
-                  );
+                  // Navigate back to the previous page
+                  Navigator.pop(context);
                 },
               ),
             ),
@@ -95,7 +91,7 @@ class gazonstadePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => gazoninfo(),
+                                builder: (context) => Gazoninfo(),
                               ),
                             );
                           },
@@ -122,7 +118,9 @@ class gazonstadePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => gazonres(),
+                                builder: (context) => TerreresPage(
+                                  bearerToken: '',
+                                ),
                               ),
                             );
                           },

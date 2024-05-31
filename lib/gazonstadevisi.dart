@@ -2,12 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hayya_traya7/msakenclub.dart';
-import 'package:hayya_traya7/terreinfo.dart';
+import 'package:hayya_traya7/gazoninfo.dart';
+import 'package:hayya_traya7/signin.dart';
+
 import 'package:hayya_traya7/terreres.dart';
 import 'home.dart'; // Import the Home page if not already imported
 
-class TerreBattuePage extends StatelessWidget {
+class gazonstadevisiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +43,7 @@ class TerreBattuePage extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  'assets/images/surfaceterrebattue.jpg',
+                  'assets/images/surffacegazon.jpg',
                 ),
                 fit: BoxFit.cover,
               ),
@@ -79,8 +80,7 @@ class TerreBattuePage extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'Dans ce type de terrain, le jeu est plus stratégique, comme une partie d'
-                          'échecs. Les joueurs qui ont recours à leur service pour gagner plus de points auront généralement du mal, car la surface élimine plusieurs des avantages du service rapide',
+                          'Sur les terrains de gazon, le jeu adopte souvent une dynamique particulière, presque comme un ballet. Les joueurs qui comptent sur leur service pour accumuler des points pourraient rencontrer des difficultés, car la surface lisse du gazon limite certains des avantages du service rapide.',
                           style: TextStyle(
                             fontSize: 18,
                           ),
@@ -92,7 +92,7 @@ class TerreBattuePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Terreinfo(),
+                                builder: (context) => Gazoninfo(),
                               ),
                             );
                           },
@@ -119,9 +119,7 @@ class TerreBattuePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => TerreresPage(
-                                  bearerToken: '',
-                                ),
+                                builder: (context) => SignInPage(),
                               ),
                             );
                           },
@@ -134,7 +132,7 @@ class TerreBattuePage extends StatelessWidget {
                                 50)), // Make button width match the parent and set height to 50
                           ),
                           child: Text(
-                            'Réserver',
+                            'Crée un compte pour reserver',
                             style: TextStyle(
                               color: Colors.white, // White text color
                               fontSize: 16, // Adjust font size

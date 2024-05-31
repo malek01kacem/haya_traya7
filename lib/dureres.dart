@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hayya_traya7/durestade.dart';
-import 'package:hayya_traya7/terrebattue.dart';
 import 'home.dart'; // Import the Home page if not already imported
 
 class dureres extends StatelessWidget {

@@ -16,10 +16,16 @@ dependencies:
   flutter_lints: ^3.0.0
   jwt_decoder: 2.0.1
   shared_preferences: ^2.2.3
+  youtube_player_flutter: ^9.0.1
+  intl: ^0.17.0
+  async: ^2.8.2
 
   flutter_test:
     sdk: flutter
   flutter_secure_storage: ^9.0.0
+  cached_network_image: ^3.3.1
+  file_picker: ^8.0.3
+  url_launcher: ^6.2.6
 
 
 
@@ -34,5 +40,17 @@ flutter:
     - assets/images/surffacegazon.jpg
     - assets/images/msakenclub.png
     - assets/images/msclub.png
+    - assets/images/troisstade.jpg
+    - assets/images/blackgreen.jpg
+    - assets/images/historique.png
+    - assets/images/reservation.png
+    - assets/images/event.png
+    - assets/images/feedback.png
+    - assets/images/setting.png
+    - assets/images/rejoindre.png
+    - assets/images/eventcup.png
+    - assets/images/teamhayya.jpg
+    - assets/images/playertenis.png
+
     
     

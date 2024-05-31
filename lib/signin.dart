@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:hayya_traya7/config.dart';
 import 'login.dart';
 
 class SignInPage extends StatefulWidget {
@@ -26,7 +26,7 @@ class _SignInState extends State<SignInPage> {
         lastNameController.text.isNotEmpty &&
         phoneNumberController.text.isNotEmpty) {
       var response = await http.post(
-        Uri.parse('http://192.168.1.8:3500/api/users/register'),
+        Uri.parse('${defaultBaseUrls}api/users/register'),
         body: {
           'email': emailController.text,
           'password': passwordController.text,
